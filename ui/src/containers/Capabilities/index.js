@@ -25,13 +25,17 @@ enableVideo: false
 `,
         curl: `curl -X POST '${origin}/wd/hub/session' -d '{ 
             "desiredCapabilities":{
-                "browserName":"${browser}", 
+                "browserName": "${browser}", 
                 "version": "${version}", 
-                "platform":"ANY",
+                "platform": "ANY",
                 "enableVNC": true,
                 "name": "this.test.is.launched.by.curl",
                 "sessionTimeout": "120s"
-            }
+            },
+	    "capabilities": {
+		"browserName": "${browser}",
+		"browserVersion": "${version}"
+	    }
         }'
 `,
         java: `DesiredCapabilities capabilities = new DesiredCapabilities();
@@ -185,15 +189,8 @@ const Launch = ({ browser: { name, version }, history }) => {
                                 name: "Manual session",
                             },
                             capabilities: {
-                                alwaysMatch: {
-                                    browserName: `${name}`,
-                                    browserVersion: `${version}`,
-                                    "selenoid:options": {
-                                        enableVNC: true,
-                                        sessionTimeout: "60m",
-                                        labels: { manual: "true" },
-                                    },
-                                },
+                                browserName: `${name}`,
+                                browserVersion: `${version}`,
                             },
                         },
                     }).pipe(
